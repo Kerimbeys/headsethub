@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/* Theme tokens — driven by the RGB Theme Engine                        */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --accent: 59 130 246; /* blue default */
+  --radius-card: 20px;
+  --radius-control: 12px;
+  --glass-blur: 24px;
+  --glass-opacity: 0.55;
+}
+
+/* Dark (default) */
+.theme-dark {
+  --surface: 15 15 22;
+  --surface-raised: 24 24 34;
+  --surface-overlay: 32 32 46;
+  --ink: 240 242 248;
+  --stroke: 255 255 255;
+  --bg-from: #0a0a12;
+  --bg-mid: #0e0e1a;
+  --bg-to: #12101f;
+  --stroke-alpha: 0.08;
+}
+
+/* Light */
+.theme-light {
+  --surface: 244 246 250;
+  --surface-raised: 255 255 255;
+  --surface-overlay: 255 255 255;
+  --ink: 24 26 36;
+  --stroke: 15 18 32;
+  --bg-from: #eef1f7;
+  --bg-mid: #e8ecf4;
+  --bg-to: #e3e6f2;
+  --stroke-alpha: 0.1;
+}
+
+/* OLED / Pure Black */
+.theme-oled {
+  --surface: 0 0 0;
+  --surface-raised: 10 10 12;
+  --surface-overlay: 18 18 22;
+  --ink: 235 237 244;
+  --stroke: 255 255 255;
+  --bg-from: #000000;
+  --bg-mid: #000000;
+  --bg-to: #050508;
+  --stroke-alpha: 0.1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base                                                                 */
+/* ------------------------------------------------------------------ */
+
+* {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  @apply font-sans text-ink antialiased;
+  background: linear-gradient(145deg, var(--bg-from) 0%, var(--bg-mid) 50%, var(--bg-to) 100%);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+body.widget-body {
+  background: transparent;
+}
+
+/* Ambient accent glow behind the app */
+.ambient-glow::before {
+  content: '';
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(600px circle at 15% 0%, rgb(var(--accent) / 0.12), transparent 45%),
+    radial-gradient(800px circle at 90% 100%, rgb(var(--accent) / 0.08), transparent 45%);
+  z-index: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Glass primitives                                                     */
+/* ------------------------------------------------------------------ */
+
+.glass {
+  background: rgb(var(--surface-raised) / var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.4);
+  border: 1px solid rgb(var(--stroke) / var(--stroke-alpha));
+  border-radius: var(--radius-card);
+}
+
+.glass-subtle {
+  background: rgb(var(--surface-raised) / calc(var(--glass-opacity) * 0.6));
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.6)) saturate(1.2);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.6)) saturate(1.2);
+  border: 1px solid rgb(var(--stroke) / calc(var(--stroke-alpha) * 0.7));
+  border-radius: var(--radius-control);
+}
+
+.gradient-border {
+  position: relative;
+  border: 1px solid transparent !important;
+  background-clip: padding-box;
+}
+
+.gradient-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgb(var(--accent) / 0.55),
+    rgb(var(--stroke) / 0.08) 40%,
+    rgb(var(--stroke) / 0.05) 60%,
+    rgb(var(--accent) / 0.3)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scrollbar                                                            */
+/* ------------------------------------------------------------------ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--stroke) / 0.15);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--accent) / 0.5);
+}
+
+/* ------------------------------------------------------------------ */
+/* Range slider (fallback styling; custom sliders are componentized)    */
+/* ------------------------------------------------------------------ */
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgb(var(--stroke) / 0.12);
+  outline: none;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: rgb(var(--accent));
+  border: 3px solid rgb(var(--surface-raised));
+  box-shadow: 0 0 12px rgb(var(--accent) / 0.6);
+  transition: transform 0.15s ease;
+}
+
+input[type='range']::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Draggable window region */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
