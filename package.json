@@ -3,7 +3,7 @@
   "productName": "HeadsetHub",
   "version": "1.0.0",
   "description": "The ultimate premium audio device manager for Windows",
-  "author": "HeadsetHub Team",
+  "author": "Oyuncaz",
   "license": "MIT",
   "type": "module",
   "main": "dist-electron/main.js",
