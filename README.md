@@ -242,5 +242,5 @@ MIT — see [LICENSE](LICENSE) for details.
 ---
 
 <p align="center">
-  Made with ❤️ by the HeadsetHub Team
+  Made with ❤️ by the Oyuncaz
 </p>
